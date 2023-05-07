@@ -47,6 +47,10 @@ public class GameMenu extends JPanel {
             line6.setBounds(110,line5.getY()+SPACE_LINE,GAME_WIDTH,50);
             frame.add(line6);
 
+            JLabel line7 = new JLabel("המשחק הוא ברמת קושי עולה, מהירות הכדור הולכה ועולה עם החבטות בכדור.");
+            line7.setBounds(130,line6.getY()+SPACE_LINE,GAME_WIDTH,50);
+            frame.add(line7);
+
             frame.setBackground(Color.WHITE);
             frame.setTitle("הוראות המשחק");
             frame.setVisible(true);
@@ -55,10 +59,6 @@ public class GameMenu extends JPanel {
         buttonPanel.add(startButton);
         buttonPanel.add(instructionsButton);
         add(buttonPanel,BorderLayout.CENTER);
-//        startButton.setBounds(200,50,startButton.getPreferredSize().width,20);
-//        add(startButton);
-//        instructionsButton.setBounds(200,70,instructionsButton.getPreferredSize().width,20);
-//        add(instructionsButton);
         ImageIcon imageIcon = new ImageIcon("DD.jpg");
         JLabel label = new JLabel(imageIcon);
         add(label);

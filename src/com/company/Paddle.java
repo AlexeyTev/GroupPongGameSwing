@@ -2,8 +2,7 @@ package com.company;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
-import javax.swing.*;
+
 
 public class Paddle extends Rectangle{
 
@@ -65,9 +64,6 @@ public class Paddle extends Rectangle{
                     move();
                 }
                 break;
-
-
-
         }
 
     }

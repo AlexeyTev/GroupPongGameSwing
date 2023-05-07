@@ -2,7 +2,6 @@ package com.company;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
 import javax.swing.*;
 
 public class GamePanel extends JPanel implements Runnable{
@@ -16,7 +15,6 @@ public class GamePanel extends JPanel implements Runnable{
     Thread gameThread;
     Image image;
     Graphics graphics;
-    Random random;
     Paddle paddle1;
     Paddle paddle2;
     Ball ball;
