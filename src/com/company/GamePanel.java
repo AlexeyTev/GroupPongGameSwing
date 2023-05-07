@@ -124,11 +124,12 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     public void run(){
+        final int FINISH_SCORE = 5;
         long lastTime = System.nanoTime();
         double amountOfTicks = 60.0;
         double ns = 1000000000 / amountOfTicks;
         double delta = 0;
-        while((this.score.player1 < 5 && this.score.player2 < 5) ){
+        while((this.score.player1 < FINISH_SCORE && this.score.player2 < FINISH_SCORE) ){
             long now = System.nanoTime();
             delta += (now - lastTime)/ns;
             lastTime = now;
@@ -137,6 +138,11 @@ public class GamePanel extends JPanel implements Runnable{
                 checkCollision();
                 repaint();
                 delta--;
+            }
+            if (this.score.player1==FINISH_SCORE){
+                winnerScreen(true);
+            }else if (this.score.player2==FINISH_SCORE) {
+                winnerScreen(false);
             }
         }
     }
@@ -152,6 +158,23 @@ public class GamePanel extends JPanel implements Runnable{
             paddle2.keyReleased(e);
 
         }
+
+    }
+    private void winnerScreen (boolean playerOneWinner){
+        JFrame frame = new JFrame();
+        frame.setLayout(null);
+        frame.setSize(300,100);
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+        String winner = "is the winner";
+        if (playerOneWinner){
+            winner = "Player one" + winner;
+        }else winner = "Player two " + winner;
+        JLabel winnerLabel = new JLabel();
+        winnerLabel.setText(winner);
+        winnerLabel.setBounds(300,10,200,50);
+        frame.add(winnerLabel);
+        frame.setVisible(true);
 
     }
 }
