@@ -64,12 +64,19 @@ public class GameMenu extends JPanel {
             frame.setVisible(true);
 
         });
+        startButton.setBackground(Color.white);
+        startButton.setForeground(Color.black);
+        startButton.setBorder(null);
+        instructionsButton.setBorder(null);
+        instructionsButton.setForeground(Color.black);
+        instructionsButton.setBackground(Color.white);
         buttonPanel.add(startButton);
         buttonPanel.add(instructionsButton);
         add(buttonPanel,BorderLayout.CENTER);
-        ImageIcon imageIcon = new ImageIcon("DD.jpg");
+        ImageIcon imageIcon = new ImageIcon("background.jpeg");
         JLabel label = new JLabel(imageIcon);
         add(label);
+        this.setBackground(Color.black);
         startMainMenuMusic();
         startButton.addActionListener(e -> {panel = new GamePanel(gf);
             stopMainMenuMusic();
