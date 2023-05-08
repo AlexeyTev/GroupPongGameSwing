@@ -4,10 +4,10 @@ import javax.swing.*;
 
 public class GameFrame extends JFrame {
 
-    GameMenu menu;
+    private GameMenu menu;
 
     GameFrame(){
-        menu = new GameMenu();
+        menu = new GameMenu(this);
         this.add(menu);
         this.setTitle("Pong Game");
         this.setResizable(false);

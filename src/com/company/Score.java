@@ -4,10 +4,10 @@ import java.awt.*;
 
 public class Score extends Rectangle {
 
-    static int GAME_WIDTH;
-    static int GAME_HEIGHT;
-    int player1;
-    int player2;
+    private static int GAME_WIDTH;
+    private  static int GAME_HEIGHT;
+    private  int player1;
+    private  int player2;
 
     Score(int GAME_WIDTH,int GAME_HEIGHT){
         Score.GAME_WIDTH = GAME_WIDTH;
@@ -23,5 +23,18 @@ public class Score extends Rectangle {
         g.drawString(String.valueOf(player1/10)+String.valueOf(player1%10),(GAME_WIDTH/2)-85,50);
         g.drawString(String.valueOf(player2/10)+String.valueOf(player2%10),(GAME_WIDTH/2)+20,50);
 
+    }
+    public void addScore (boolean playerOne){
+        if (playerOne){
+            this.player1++;
+        }else this.player2++;
+    }
+
+    public int getPlayer1() {
+        return player1;
+    }
+
+    public int getPlayer2() {
+        return player2;
     }
 }

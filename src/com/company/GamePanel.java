@@ -11,29 +11,31 @@ import javax.swing.*;
 
 public class GamePanel extends JPanel implements Runnable {
 
-    static final int GAME_WIDTH = 1000;
-    static final int GAME_HEIGHT = (int) (GAME_WIDTH * (0.5555));
-    static final Dimension SCREEN_SIZE = new Dimension(GAME_WIDTH, GAME_HEIGHT);
-    static final int BALL_DIAMETER = 20;
-    static final int PADDLE_WIDTH = 25;
-    static final int PADDLE_HEIGHT = 100;
-    Thread gameThread;
-    Image image;
-    Graphics graphics;
-    Paddle paddle1;
-    Paddle paddle2;
-    Ball ball;
-    Score score;
+   private static final int GAME_WIDTH = 1000;
+    private static final int GAME_HEIGHT = (int) (GAME_WIDTH * (0.5555));
+    private static final Dimension SCREEN_SIZE = new Dimension(GAME_WIDTH, GAME_HEIGHT);
+    private static final int BALL_DIAMETER = 20;
+    private static final int PADDLE_WIDTH = 25;
+    private  static final int PADDLE_HEIGHT = 100;
+    private static final int GAME_MINIMUM_WIDTH = 0 ;
+    private Thread gameThread;
+    private Image image;
+   private Graphics graphics;
+   private Paddle paddle1;
+  private   Paddle paddle2;
+   private Ball ball;
+   private Score score;
+   private GameFrame gf;
 
 
-    GamePanel() {
+    GamePanel(GameFrame gf) {
         newPaddles();
         newBall();
         score = new Score(GAME_WIDTH, GAME_HEIGHT);
         this.setFocusable(true);
         this.addKeyListener(new AL());
         this.setPreferredSize(SCREEN_SIZE);
-
+        this.gf=gf;
         gameThread = new Thread(this);
         gameThread.start();
     }
@@ -87,39 +89,39 @@ public class GamePanel extends JPanel implements Runnable {
             paddle2.y = GAME_HEIGHT - PADDLE_HEIGHT;
 
         if(ball.y <= 0)
-            ball.setYDirection(-ball.yVelocity);
+            ball.setYDirection(-ball.getyVelocity());
         if(ball.y >= GAME_HEIGHT - BALL_DIAMETER)
-            ball.setYDirection(-ball.yVelocity);
+            ball.setYDirection(-ball.getyVelocity());
 
         if(ball.intersects(paddle1)) {
-            ball.xVelocity = Math.abs(ball.xVelocity);
-            ball.xVelocity++;
-            if (ball.yVelocity > 0)
-                ball.yVelocity++;
+            ball.setxVelocity(Math.abs(ball.getxVelocity())) ;
+            ball.setxVelocity(ball.getxVelocity()+1);
+            if (ball.getyVelocity() > 0)
+                ball.setyVelocity(ball.getyVelocity()+1);
             else
-                ball.yVelocity--;
-            ball.setXDirection(ball.xVelocity);
-            ball.setYDirection(ball.yVelocity);
+                ball.setyVelocity(ball.getyVelocity()-1);
+            ball.setXDirection(ball.getxVelocity());
+            ball.setYDirection(ball.getyVelocity() );
         }
 
         if(ball.intersects(paddle2)) {
-            ball.xVelocity = Math.abs(ball.xVelocity);
-            ball.xVelocity++;
-            if (ball.yVelocity > 0)
-                ball.yVelocity++;
+            ball.setxVelocity(Math.abs(ball.getxVelocity())) ;
+            ball.setxVelocity(ball.getxVelocity()+1);
+            if (ball.getyVelocity()  > 0)
+                ball.setyVelocity(ball.getyVelocity()+1);
             else
-                ball.yVelocity--;
-            ball.setXDirection(-ball.xVelocity);
-            ball.setYDirection(ball.yVelocity);
+                ball.setyVelocity(ball.getyVelocity()-1);
+            ball.setXDirection(-ball.getxVelocity());
+            ball.setYDirection(ball.getyVelocity() );
         }
 
-        if(ball.x <=0) {
-            score.player2++;
+        if(ball.x <=GAME_MINIMUM_WIDTH) {
+            score.addScore(false);
             newPaddles();
             newBall();
         }
         if(ball.x >= GAME_WIDTH-BALL_DIAMETER){
-            score.player1++;
+            score.addScore(true);
             newPaddles();
             newBall();
         }
@@ -132,7 +134,7 @@ public class GamePanel extends JPanel implements Runnable {
         double amountOfTicks = 60.0;
         double ns = 1000000000 / amountOfTicks;
         double delta = 0;
-        while ((this.score.player1 < FINISH_SCORE && this.score.player2 < FINISH_SCORE)) {
+        while ((this.score.getPlayer1() < FINISH_SCORE && this.score.getPlayer2() < FINISH_SCORE)) {
             long now = System.nanoTime();
             delta += (now - lastTime) / ns;
             lastTime = now;
@@ -142,9 +144,9 @@ public class GamePanel extends JPanel implements Runnable {
                 repaint();
                 delta--;
             }
-            if (this.score.player1 == FINISH_SCORE) {
+            if (this.score.getPlayer1() == FINISH_SCORE) {
                 winnerScreen(true);
-            } else if (this.score.player2 == FINISH_SCORE) {
+            } else if (this.score.getPlayer2() == FINISH_SCORE) {
                 winnerScreen(false);
             }
         }
@@ -168,20 +170,29 @@ public class GamePanel extends JPanel implements Runnable {
     private void winnerScreen(boolean playerOneWinner) {
         JFrame frame = new JFrame();
         frame.setLayout(null);
-        frame.setSize(300, 100);
+        frame.setSize(300, 250);
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         String winner = "is the winner";
         if (playerOneWinner) {
-            winner = "Player one" + winner;
-        } else winner = "Player two " + winner;
+            winner = "Blue " + winner;
+        } else winner = "Red " + winner;
         JLabel winnerLabel = new JLabel();
         winnerLabel.setText(winner);
-        winnerLabel.setBounds(300, 10, 200, 50);
+        winnerLabel.setBounds(50, 50, 100, 50);
         frame.add(winnerLabel);
+        JButton rematch = new JButton("Rematch");
+        rematch.setBounds(winnerLabel.getX(),winnerLabel.getY()+50,100,20);
+        frame.add(rematch);
         frame.setVisible(true);
+        rematch.addActionListener(e -> {
+            new GameFrame();
+            frame.dispose();
+            this.gf.dispose();
+
+        });
         playWinMusic();
-    }
+        }
 
     private void playWinMusic() {
         try {
@@ -195,7 +206,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     private void goalScoreMusic() {
         try {
-            Player goalScoreSound = new Player(new FileInputStream("src\\com\\company\\Sounds\\Goal.mp3"));
+            Player goalScoreSound = new Player(new FileInputStream("src\\com\\company\\Sounds\\Goal.wav'"));
             goalScoreSound.play();
             goalScoreSound.close();
         } catch (JavaLayerException | FileNotFoundException e) {

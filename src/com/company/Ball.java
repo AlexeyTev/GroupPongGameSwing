@@ -4,10 +4,10 @@ import java.util.*;
 
 public class Ball extends Rectangle{
 
-    Random random;
-    int xVelocity;
-    int yVelocity;
-    int initialSpeed = 2;
+    private  Random random;
+    private  int xVelocity;
+    private int yVelocity;
+    private  int initialSpeed = 2;
 
     Ball(int x,int y,int width,int height){
         super(x,y,width,height);
@@ -42,5 +42,21 @@ public class Ball extends Rectangle{
     public void draw(Graphics g){
         g.setColor(Color.white);
         g.fillOval(x,y,height,width);
+    }
+
+    public int getxVelocity() {
+        return xVelocity;
+    }
+
+    public int getyVelocity() {
+        return yVelocity;
+    }
+
+    public void setxVelocity(int xVelocity) {
+        this.xVelocity = xVelocity;
+    }
+
+    public void setyVelocity(int getyVelocity) {
+        this.yVelocity = getyVelocity;
     }
 }

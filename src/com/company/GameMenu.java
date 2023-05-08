@@ -10,15 +10,16 @@ import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 public class GameMenu extends JPanel {
     GamePanel panel;
-    static final int SPACE_LINE = 20;
-    static final int GAME_WIDTH = 1000;
-    static final int GAME_HEIGHT = (int)(GAME_WIDTH * (0.5555));
-    static final Dimension SCREEN_SIZE = new Dimension(GAME_WIDTH,GAME_HEIGHT);
+    private  static final int SPACE_LINE = 20;
+    private static final int GAME_WIDTH = 1000;
+    private static final int GAME_HEIGHT = (int)(GAME_WIDTH * (0.5555));
+    private static final Dimension SCREEN_SIZE = new Dimension(GAME_WIDTH,GAME_HEIGHT);
     private Player mainMenuMusicPlayer;
     private Player startGameWhistle;
 
 
-    public GameMenu(){
+
+    public GameMenu(GameFrame gf){
         this.setPreferredSize(SCREEN_SIZE);
        JPanel buttonPanel = new JPanel();
         JButton startButton = new JButton("התחלת המשחק");
@@ -70,7 +71,7 @@ public class GameMenu extends JPanel {
         JLabel label = new JLabel(imageIcon);
         add(label);
         startMainMenuMusic();
-        startButton.addActionListener(e -> {panel = new GamePanel();
+        startButton.addActionListener(e -> {panel = new GamePanel(gf);
             stopMainMenuMusic();
             playWhistle();
             this.add(panel);
