@@ -170,7 +170,7 @@ public class GamePanel extends JPanel implements Runnable {
     private void winnerScreen(boolean playerOneWinner) {
         JFrame frame = new JFrame();
         frame.setLayout(null);
-        frame.setSize(300, 250);
+        frame.setSize(300, 300);
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         String winner = "is the winner";
@@ -179,11 +179,15 @@ public class GamePanel extends JPanel implements Runnable {
         } else winner = "Red " + winner;
         JLabel winnerLabel = new JLabel();
         winnerLabel.setText(winner);
-        winnerLabel.setBounds(50, 50, 100, 50);
+        winnerLabel.setBounds(100, 15, 150, 50);
         frame.add(winnerLabel);
         JButton rematch = new JButton("Rematch");
         rematch.setBounds(winnerLabel.getX(),winnerLabel.getY()+50,100,20);
         frame.add(rematch);
+        ImageIcon imageIcon = new ImageIcon("winnerIMG.jpg");
+        JLabel label = new JLabel(imageIcon);
+        label.setBounds(50,winnerLabel.getY()+80,200,140);
+        frame.add(label);
         frame.setVisible(true);
         rematch.addActionListener(e -> {
             new GameFrame();
