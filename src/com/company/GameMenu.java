@@ -3,13 +3,20 @@ package com.company;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
 public class GameMenu extends JPanel {
     GamePanel panel;
     static final int SPACE_LINE = 20;
     static final int GAME_WIDTH = 1000;
     static final int GAME_HEIGHT = (int)(GAME_WIDTH * (0.5555));
     static final Dimension SCREEN_SIZE = new Dimension(GAME_WIDTH,GAME_HEIGHT);
+    private Player mainMenuMusicPlayer;
+    private Player startGameWhistle;
+
 
     public GameMenu(){
         this.setPreferredSize(SCREEN_SIZE);
@@ -62,12 +69,50 @@ public class GameMenu extends JPanel {
         ImageIcon imageIcon = new ImageIcon("DD.jpg");
         JLabel label = new JLabel(imageIcon);
         add(label);
-        startButton.addActionListener(e -> {
-            panel = new GamePanel();
+        startMainMenuMusic();
+        startButton.addActionListener(e -> {panel = new GamePanel();
+            stopMainMenuMusic();
+            playWhistle();
             this.add(panel);
             startButton.setVisible(false);
             remove(buttonPanel);
             remove(label);
         });
+    }
+
+    private void startMainMenuMusic() {
+        try {
+            mainMenuMusicPlayer = new Player(new FileInputStream("src\\com\\company\\Sounds\\MainMenuMusic.mp3"));
+            Thread musicThread = new Thread(() -> {
+                try {
+                    mainMenuMusicPlayer.play();
+                } catch (JavaLayerException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            musicThread.start();
+        } catch (JavaLayerException | FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void stopMainMenuMusic() {
+        if (mainMenuMusicPlayer != null) {
+            mainMenuMusicPlayer.close();
+        }
+    }
+
+    private void playWhistle(){
+        try {
+            try {
+                startGameWhistle = new Player(new FileInputStream("src\\com\\company\\Sounds\\Whistle.mp3"));
+            } catch (JavaLayerException | FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+            startGameWhistle.play();
+            startGameWhistle.close();
+        } catch (JavaLayerException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

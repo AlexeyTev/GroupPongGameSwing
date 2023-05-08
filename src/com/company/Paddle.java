@@ -70,8 +70,6 @@ public class Paddle extends Rectangle{
 
     public void setYDirection(int yDirection){
         yVelocity = yDirection;
-
-
     }
 
     public void move(){
